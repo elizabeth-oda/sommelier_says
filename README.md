@@ -1,3 +1,9 @@
-# wine_prices
-Work-in-progress model to predict wine prices.
-The dataset can be found [on Kaggle](https://www.kaggle.com/mysarahmadbhat/wine-tasting).
+# Overview
+This project aims to use a variety of ML and DL tools to predict the price and/or points awarded to a wine.
+Specifically, I use:
+* Basic feature engineering and linear regression
+* Latent Dirichlet Allocation (LDA) for topic extraction
+* Word2Vec and Long Short-Term Memory (LSTM) to predict wine points
+
+# Dataset
+The dataset can be found [on Kaggle](https://www.kaggle.com/mysarahmadbhat/wine-tasting). It contains about 130,000 wine reviews published to WineEnthusiast with features such as the country, variety, price, points, etc.
