@@ -36,7 +36,8 @@ class Data:
                        'taster_name',
                        'taster_twitter_handle']
         for col in replace_nan:
-            df[col] = df[col].replace(np.nan, 'None')
+            mask = df[col].isna()
+            df.loc[mask, col] = 'None'
         return df
     def clean_nan_values(df: pd.DataFrame) -> pd.DataFrame:
         # Calculate the mean price for each country
