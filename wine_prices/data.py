@@ -108,5 +108,5 @@ class Data:
         return df_no_outliers
     def outliers_only(df: pd.DataFrame, z=3) -> pd.DataFrame:
         # Keeps only price outliers
-        df_outliers = df[(np.abs(stats.zscore(df['price'])) >= 3)]
+        df_outliers = df[(np.abs(stats.zscore(df['price'])) >= z)]
         return df_outliers
