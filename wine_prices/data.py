@@ -1,9 +1,10 @@
 import pandas as pd
 import numpy as np
 import string
+import nltk
 from nltk.corpus import stopwords
 from nltk import word_tokenize
-import nltk
+from tensorflow.keras.preprocessing.sequence import pad_sequences
 
 
 class Data:
@@ -130,6 +131,12 @@ class Review:
         Removes standard English stopwords
     remove_wine_stopwords:
         Removes standard English stopwords, plus wine-specific stopwords
+    vector_substract:
+        Calculates the difference of word vectors
+    embed_sentence:
+        Converts sentence to a matrix
+    embed_pad:
+        Converts a list of sentences into a list of matrices and pads them
     """
     def lower(rev: str) -> str:
         return rev.str.lower()
@@ -162,5 +169,23 @@ class Review:
         ]
         return without_stopwords
 
+    def vector_subtract(wv_model, word1: str, word2: str) -> list:
+        v_word1 = wv_model.wv[word1]
+        v_word2 = wv_model.wv[word2]
+        v_result = v_word1 - v_word2
+        return wv_model.wv.similar_by_vector(v_result)
 
-class Predict:
+    def embed_sentence(wv_model, sentence):
+        embedded_sentence = []
+        for word in sentence:
+            if word in wv_model.wv:
+                embedded_sentence.append(wv_model.wv[word])
+        return np.array(embedded_sentence)
+
+    def embed_pad(wv_model, sentences):
+        embed = []
+        for sentence in sentences:
+            embedded_sentence = embed_sentence(wv_model, sentence)
+            embed.append(embedded_sentence)
+        sentences_pad = pad_sequences(embed, dtype='float32', padding='post')
+        return sentences_pad
