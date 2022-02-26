@@ -1,6 +1,9 @@
 import pandas as pd
 import numpy as np
-from scipy import stats
+import string
+from nltk.corpus import stopwords
+from nltk import word_tokenize
+import nltk
 
 
 class Data:
@@ -111,3 +114,53 @@ class Data:
         # Keeps only price outliers
         df_outliers = df[(np.abs(stats.zscore(df['price'])) >= z)]
         return df_outliers
+
+
+class Review:
+    """
+    This class contains several methods for processing text data.
+
+    Methods
+    -------
+    lower:
+        Returns the string in lowercase
+    punct:
+        Removes punctuation, including em-dashes
+    remove_stopwords:
+        Removes standard English stopwords
+    remove_wine_stopwords:
+        Removes standard English stopwords, plus wine-specific stopwords
+    """
+    def lower(rev: str) -> str:
+        return rev.str.lower()
+
+    def punct(rev: str) -> str:
+        punc = string.punctuation
+        punc += '—'
+        for p in punc:
+            rev = rev.replace(p, ' ')
+        return rev
+
+    def remove_stopwords(rev: str) -> str:
+        nltk.download('stopwords')
+        nltk.download('punkt')
+        nltk.download('wordnet')
+        stop_words = set(stopwords.words('english'))
+        tokenized = word_tokenize(rev)
+        without_stopwords = [
+            word for word in tokenized if not word in stop_words
+        ]
+        return without_stopwords
+
+    def remove_wine_stopwords(rev: str) -> str:
+        wine_stopwords = stopwords.words('english')
+        custom_words = ['wine', 'flavors', 'aromas', 'notes', 'palate']
+        wine_stopwords.extend(custom_words)
+        tokenized = word_tokenize(rev)
+        without_stopwords = [
+            word for word in tokenized if not word in wine_stopwords
+        ]
+        return without_stopwords
+
+
+class Predict:
