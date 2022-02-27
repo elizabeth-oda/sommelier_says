@@ -36,8 +36,7 @@ if len(review) > 0:
     rev = Review.remove_wine_stopwords(rev)
     wv_model = Word2Vec.load(join(dirname(__file__), "wv_model.model"))
     rev_pad = Review.embed_review(wv_model, rev)
-    st.write("Number of words used for analysis: ", len(rev_pad))
-    lstm_model = load_model(join(dirname(__file__), "model2_points.h5"))
+    lstm_model = load_model(join(dirname(__file__), "model3_points.h5"))
     result = lstm_model.predict(rev_pad)
     st.write(result)
 

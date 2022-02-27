@@ -183,11 +183,12 @@ class Review:
         for word in review:
             if word in wv_model.wv:
                 embed.append(wv_model.wv[word])
-        if len(embed) > 78:
+        embed = np.array(embed)
+        if embed.shape[0] > 78:
             sentences_pad = pad_sequences(embed,
                                           dtype='float32',
                                           truncating='post')
         else:
-            to_add = 78 - len(embed)
-            sentences_pad = np.pad(embed, pad_width=(to_add,0))
-        return sentences_pad
+            to_add = 78 - embed.shape[0]
+            sentences_pad = np.pad(embed, pad_width=[(to_add,0),(0,0)])
+        return np.expand_dims(sentences_pad, axis=0)
