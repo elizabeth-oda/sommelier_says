@@ -139,7 +139,10 @@ class Review:
         Converts a list of sentences into a list of matrices and pads them
     """
     def lower(rev: str) -> str:
-        return rev.str.lower()
+        if type(rev)==str:
+            return rev.lower()
+        else:
+            return rev.str.lower()
 
     def punct(rev: str) -> str:
         punc = string.punctuation
