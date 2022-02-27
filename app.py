@@ -6,6 +6,8 @@ import pathlib
 from os.path import join, isfile, dirname
 from os import listdir
 from PIL import Image
+from gensim.models import Word2Vec
+from tensorflow.keras.models import load_model
 
 st.set_page_config(page_title="Sommelier Says", page_icon="🍷")
 
@@ -23,7 +25,23 @@ st.write(
     [LinkedIn.](https://www.linkedin.com/in/elizabethoda/)"
 )
 
+# Insert text for reviews
+st.header("Try it out!")
+review = st.text_area("Paste a wine review here")
 
+# The model makes predictions and displays them
+if len(review) > 0:
+    rev = Review.lower(review)
+    rev = Review.punct(rev)
+    rev = Review.remove_wine_stopwords(rev)
+    wv_model = Word2Vec.load(join(dirname(__file__), "wv_model.model"))
+    rev_pad = Review.embed_review(wv_model, rev)
+    st.write(rev_pad)
+    # lstm_model = load_model(join(dirname(__file__), "model1_points.h5"))
+    # result = lstm_model.predict(rev_pad)
+    # st.write(result)
+
+# Finds filepath for photos
 file_dir = join(dirname(__file__), "photos")
 
 # Displays example reviews from the test set
@@ -52,7 +70,7 @@ col3.write(
     "**Example 2:**\
     French oak, menthol and plum aromas waft out of the glass. The taut,\
     rather light-bodied palate offers tart red cherry, star anise and coffee\
-    bean alongside grainy tannins that leave a grippy, astringent finish."                                                                                                                                                    )
+    bean alongside grainy tannins that leave a grippy, astringent finish."                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                )
 col3.subheader("Points: 88")
 col3.write(
     "**Example 3:**\
@@ -60,7 +78,7 @@ col3.write(
     body, yet possessed of firm acidity and a crispness of cherry kirsch\
     and pomegranate. It practically shouts violets and roses on the nose,\
     following through on the palate with a delicacy of power that's entirely\
-    surprising. The finish is a mix of allspice and white pepper."                                                                  )
+    surprising. The finish is a mix of allspice and white pepper."                                                                                                                                                                                                                                                                                                                                                                                                                                                                              )
 col3.subheader("Points: 92")
 col4.image(join(file_dir, "klara-kulikova-unsplash.jpg"))
 
@@ -73,23 +91,5 @@ col6.write(
     Whiffs of sweet curry spice and fennel are enticing on the nose of this\
     earthy, rather savory Riesling from Rock Stream. Lean in profile and\
     vibrantly acidic with a squeaky, lemony sheen, it's the perfect pairing\
-    for subtly spiced South Indian cuisine.")
+    for subtly spiced South Indian cuisine."                                                                                                                                                                                                                                                                        )
 col6.subheader("Points: 85")
-
-# Allows users to insert text
-st.header("Try it out!")
-review = st.text_area("Paste a wine review here")
-
-# The model makes predictions and displays them
-if review is not None:
-    rev = Review.lower(review)
-    rev = Review.punct(rev)
-    rev = Review.remove_wine_stopwords(rev)
-    st.write(rev)
-    result = predict(img)
-    predictions = process_predict(result)
-    top_three = dict(sorted(predictions.items(), key=lambda x: -x[1])[:3])
-    st.header("Your Results")
-    for l, p in top_three.items():
-        st.subheader(l)
-        st.write("Probability: " + str(round(p * 100, 1)) + "%")
