@@ -178,10 +178,16 @@ class Review:
         v_result = v_word1 - v_word2
         return wv_model.wv.similar_by_vector(v_result)
 
-    def embed_review(wv_model, sentence):
-        embedded_sentence = []
-        for word in sentence:
+    def embed_review(wv_model, review):
+        embed = []
+        for word in review:
             if word in wv_model.wv:
-                embedded_sentence.append(wv_model.wv[word])
-        sentences_pad = pad_sequences(embedded_sentence, dtype='float32', padding='post')
+                embed.append(wv_model.wv[word])
+        if len(embed) > 78:
+            sentences_pad = pad_sequences(embed,
+                                          dtype='float32',
+                                          truncating='post')
+        else:
+            to_add = 78 - len(embed)
+            sentences_pad = np.pad(embed, pad_width=(to_add,0))
         return sentences_pad
