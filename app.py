@@ -54,7 +54,10 @@ st.write(
 )
 
 X_test = pd.read_csv('X_test_wine.csv')
-rand_five = np.random.randint(low=0, high=len(X_test['description']), size=5)
-for i in range(len(rand_five)):
-    st.write(X_test['description'][rand_five[i]])
-    st.write("Points: TBD")
+y_test = pd.read_csv('y_test_wine.csv')
+
+if st.button("Load example reviews"):
+    rand_five = np.random.randint(low=0, high=len(X_test['description']), size=5)
+    for i in range(len(rand_five)):
+        st.write(X_test['description'][rand_five[i]])
+        st.write(y_test['points'][rand_five[i]])
