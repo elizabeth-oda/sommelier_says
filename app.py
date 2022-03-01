@@ -41,7 +41,8 @@ if len(review) > 0:
     rev_pad = Review.embed_review(wv_model, rev)
     lstm_model = load_model(join(file_dir, "model4_points.h5"))
     result = lstm_model.predict(rev_pad)
-    st.write(result)
+    points = str(round(result[0][0]))
+    st.subheader("Predicted points: " + points)
 
 # Finds filepath for photos
 photo_dir = join(file_dir, "photos")
@@ -60,4 +61,4 @@ if st.button("Load example reviews"):
     rand_five = np.random.randint(low=0, high=len(X_test['description']), size=5)
     for i in range(len(rand_five)):
         st.write(X_test['description'][rand_five[i]])
-        st.write(y_test['points'][rand_five[i]])
+        st.write("Points: ", y_test['points'][rand_five[i]].astype('str'))
