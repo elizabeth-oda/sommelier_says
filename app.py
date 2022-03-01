@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 from wine_prices.data import Review
 import nltk
+from nltk import word_tokenize
 import pathlib
 from os.path import join, isfile, dirname
 from os import listdir
