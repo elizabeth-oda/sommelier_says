@@ -10,6 +10,8 @@ from PIL import Image
 from gensim.models import Word2Vec
 from tensorflow.keras.models import load_model
 
+nltk.download('stopwords')
+
 st.set_page_config(page_title="Sommelier Says", page_icon="🍷")
 
 STREAMLIT_STATIC_PATH = (pathlib.Path(st.__path__[0]) / "static")
