@@ -12,6 +12,8 @@ from gensim.models import Word2Vec
 from tensorflow.keras.models import load_model
 
 nltk.download('stopwords')
+nltk.download('punkt')
+nltk.download('wordnet')
 
 st.set_page_config(page_title="Sommelier Says", page_icon="🍷")
 
