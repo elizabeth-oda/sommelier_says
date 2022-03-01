@@ -11,6 +11,7 @@ from PIL import Image
 from gensim.models import Word2Vec
 from tensorflow.keras.models import load_model
 
+# Downloads essential NLTK libraries
 nltk.download('stopwords')
 nltk.download('punkt')
 nltk.download('wordnet')
@@ -24,6 +25,14 @@ st.title("Sommelier Says 🍷")
 st.subheader(
     "Just-for-fun app that predicts the points awarded to a wine\
     based on its review."
+)
+st.write(
+    "**The details:** Wines are awarded points on a\
+    [scale of 1-100](https://www.winespectator.com/articles/scoring-scale)\
+    based on their quality. This app uses Word2Vec and LSTM to predict\
+    the points awarded to a wine based on only its review. The model was\
+    trained on more than ninety-thousand reviews from wine critics. The\
+    mean square error is less than 3 points."
 )
 st.write(
     "If you found this interesting, connect with me, Elizabeth Oda, via\
@@ -47,10 +56,7 @@ if len(review) > 0:
     lstm_model = load_model(join(file_dir, "model4_points.h5"))
     result = lstm_model.predict(rev_pad)
     points = str(round(result[0][0]))
-    st.subheader("Predicted points: " + points)
-
-# Finds filepath for photos
-photo_dir = join(file_dir, "photos")
+    st.subheader("Sommelier says... " + points + " points!")
 
 # Displays example reviews from the test set
 st.subheader("Example reviews that you can copy and paste")
