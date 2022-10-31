@@ -1,0 +1,4 @@
+outs:
+- md5: 01de0d59fa802ff2fd8c7880628df422
+  size: 34907338
+  path: wv_model200.model
