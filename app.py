@@ -1,7 +1,7 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
-from wine_prices.data import Review
+from sommelier_says.data_processing import PreprocessStrings
 import nltk
 from nltk import word_tokenize
 import pathlib
@@ -48,12 +48,12 @@ file_dir = dirname(__file__)
 
 # The model makes predictions and displays them
 if len(review) > 0:
-    rev = Review.lower(review)
-    rev = Review.punct(rev)
-    rev = Review.remove_wine_stopwords(rev)
-    wv_model = Word2Vec.load(join(file_dir, "wv_model200.model"))
-    rev_pad = Review.embed_review(wv_model, rev)
-    lstm_model = load_model(join(file_dir, "model4_points.h5"))
+    rev = PreprocessStrings.lower(review)
+    rev = PreprocessStrings.punct(rev)
+    rev = PreprocessStrings.remove_wine_stopwords(rev)
+    wv_model = Word2Vec.load(join(file_dir, "models/wv_model200.model"))
+    rev_pad = PreprocessStrings.embed_review(wv_model, rev)
+    lstm_model = load_model(join(file_dir, "models/model4_points.h5"))
     result = lstm_model.predict(rev_pad)
     points = str(round(result[0][0]))
     st.subheader("Sommelier says... " + points + " points!")
@@ -65,8 +65,8 @@ st.write(
     Please note that these reviews were not used to train the model."
 )
 
-X_test = pd.read_csv('X_test_wine.csv')
-y_test = pd.read_csv('y_test_wine.csv')
+X_test = pd.read_csv('data/X_test_wine.csv')
+y_test = pd.read_csv('data/y_test_wine.csv')
 
 if st.button("Load example reviews"):
     rand_five = np.random.randint(low=0, high=len(X_test['description']), size=5)
